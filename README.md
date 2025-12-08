@@ -2,8 +2,11 @@
 
 Утилита командной строки для получения свободного порта. Выводит номер свободного для использования TCP-порта в stdout. 
 
-[![Go Version](https://img.shields.io/github/go-mod/go-version
-[![Releases](https://img.shields.io/github/v/release/arthttps://github.com/artemshalin/freeport/releaseshttps://img.shields.io/github/license/art
+[![Go Version](https://img.shields.io/github/go-mod/go-version)]
+
+[![Releases](https://img.shields.io/github/v/release/arthttps://github.com/artemshalin/freeport/releaseshttps://img.shields.io/github/license/art)]
+
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
 
 ## Установка
 
