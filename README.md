@@ -17,6 +17,7 @@ tar xzf freeport_Linux_x86_64.tar.gz && chmod +x freeport
 ```
 
 #### macOS arm64  
+
 ```ah
 curl -L -o freeport https://github.com/artemshalin/freeport/releases/latest/download/freeport_Darwin_arm64.tar.gz
 tar xzf freeport_Darwin_arm64.tar.gz && chmod +x freeport
