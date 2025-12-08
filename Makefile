@@ -6,8 +6,6 @@ COMMIT=$(shell git rev-parse --short HEAD)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 TAG=$(shell git describe --tags |cut -d- -f1)
 
-LDFLAGS = -ldflags "-X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}"
-
 .PHONY: help cleanup dep lint build install uninstall 
 
 .DEFAULT_GOAL := help
@@ -21,7 +19,7 @@ dep: ## Download the dependencies.
 
 build: dep ## Build freeport executable.
 	mkdir -p ./bin
-	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${PROGRAM_NAME} ./cmd/${PROGRAM_NAME}
+	go build -o bin/${PROGRAM_NAME} ./cmd/${PROGRAM_NAME}
 
 cleanup: ## Clean up the build directory.
 	rm -f ./bin/${PROGRAM_NAME}_${GOARCH}_${GOOS}

@@ -1,11 +1,12 @@
-# stage 1: build
-FROM golang:1.25.5 as build
+# Builder stage
+FROM --platform=$BUILDPLATFORM golang:1.25.5 AS build
 LABEL stage=intermediate
 WORKDIR /app
 COPY . .
-RUN make build
+ARG TARGETOS TARGETARCH
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o bin/${PROGRAM_NAME} ./cmd/${PROGRAM_NAME}
 
-# stage 2: scratch
+# Runtime stage
 FROM scratch as scratch
 COPY --from=build /app/bin/freeport /bin/freeport
 CMD ["freeport"]
