@@ -33,3 +33,4 @@ go.work.sum
 
 # lint
 golangci-lint/*
+dist/
