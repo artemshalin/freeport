@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 			logger.Error("an error occurred while trying to get free port", slog.String("wrapped error", err.Error()))
 		}
 
-		logger.Info("done", slog.Int("freeport is", p))
+		logger.Info("", slog.IntValue(p))
 	},
 }
 
