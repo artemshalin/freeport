@@ -4,7 +4,7 @@ LABEL stage=intermediate
 WORKDIR /app
 COPY . .
 ARG TARGETOS TARGETARCH
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o bin/${PROGRAM_NAME} ./cmd/${PROGRAM_NAME}
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o bin/freeport ./cmd/freeport
 
 # Runtime stage
 FROM scratch as scratch
