@@ -25,19 +25,54 @@ tar xzf freeport_Darwin_arm64.tar.gz && chmod +x freeport
 ### Docker
 
 ```sh
-docker pull ghcr.io/artemshalin/freeport:latest
+docker pull ghcr.io/artemshalin/freeport:latest freeport
 ```
 
 ## Использование
 
 ### Исполняемый файл
 
+С параметрами по умолчанию:
+
 ```sh
 freeport
 ```
 
-### Docker
+Указан диапазон и ipv6:
 
 ```sh
-docker run --network=host ghcr.io/artemshalin/freeport:latest
+freeport --from 5000 --to 6000 --ipv6
+```
+
+### Docker
+
+С параметрами по умолчанию:
+
+```sh
+docker run --network=host ghcr.io/artemshalin/freeport:latest freeport
+```
+
+Указан диапазон и ipv6:
+
+```sh
+docker run --network=host ghcr.io/artemshalin/freeport:latest freeport --from 5000 --to 6000 --ipv6
+```
+
+### GitLab CI
+
+```yaml
+find_free_port:
+  image: docker:24.0
+  script:
+    # Захватываем свободный порт в переменную FREE_PORT
+    - FREE_PORT=$(docker run --network=host ghcr.io/artemshalin/freeport:latest freeport --from 5000 --to 6000 --ipv6)
+    - echo "Найден свободный порт: $FREE_PORT"
+    - export FREE_PORT  # Делает переменную доступной для следующих шагов и jobs
+    # Теперь FREE_PORT можно использовать дальше
+    - echo "Запуск сервиса на порту $FREE_PORT"
+    # Пример: запуск другого контейнера с этим портом
+    - docker run -p "$FREE_PORT:8080" my-app:latest
+  # Переменная FREE_PORT будет доступна в after_script и следующих jobs
+  after_script:
+    - echo "Порт использовался: $FREE_PORT"
 ```

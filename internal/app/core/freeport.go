@@ -4,24 +4,25 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"time"
 )
 
-func GetFreePort() (int, error) {
-	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
-	if err != nil {
-		return 0, fmt.Errorf("an error occurred while trying to resolve TCP addr, err: %w", err)
-	}
+var ErrNoFreePort = errors.New("no free ports")
+var ErrBadRange = errors.New("the 'to' port cannot be smaller than the 'from' port")
 
-	l, err := net.ListenTCP("tcp", addr)
-	if err != nil {
-		return 0, fmt.Errorf("an error occurred while trying to listen TCP on host, err: %w", err)
+func CheckRange(from int, to int, addrPrefix string) (int, error) {
+	if from > to {
+		return 0, ErrBadRange
 	}
-	defer l.Close()
+	for port := from; port <= to; port++ {
+		addr := net.JoinHostPort(addrPrefix, fmt.Sprintf("%d", port))
 
-	v, ok := l.Addr().(*net.TCPAddr)
-	if ok {
-		return v.Port, nil
+		conn, err := net.DialTimeout("tcp", addr, 100*time.Millisecond)
+		if err != nil {
+			return port, nil
+		}
+
+		conn.Close()
 	}
-
-	return 0, errors.New("retrieved unexpected net.Addr value")
+	return 0, ErrNoFreePort
 }
